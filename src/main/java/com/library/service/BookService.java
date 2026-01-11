@@ -12,15 +12,28 @@ public class BookService {
 
     private List<Book> books = new ArrayList<>();
 
+    // Thread pool for background jobs
     private ExecutorService executor = Executors.newFixedThreadPool(2);
 
-    public synchronized Book addBook(String title) {
-        Book book = new Book(UUID.randomUUID().toString(), title, "PROCESSING");
+    // Called by Controller when a book is added
+    public Book addBook(String title) {
+
+        // Create book with PROCESSING state
+        Book book = new Book();
+        book.setId(UUID.randomUUID().toString());
+        book.setTitle(title);
+        book.setStatus("PROCESSING");
+
+        // Save it immediately
         books.add(book);
 
+        // Submit slow work to background thread
         executor.execute(() -> {
             try {
+                // Simulate barcode printing
                 Thread.sleep(3000);
+
+                // Update book status after delay
                 synchronized (books) {
                     book.setStatus("AVAILABLE");
                 }
@@ -29,6 +42,7 @@ public class BookService {
             }
         });
 
+        // Return immediately (HTTP thread does not wait)
         return book;
     }
 
