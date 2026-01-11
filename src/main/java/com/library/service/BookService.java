@@ -31,7 +31,7 @@ public class BookService {
         executor.execute(() -> {
             try {
                 // Simulate barcode printing
-                Thread.sleep(3000);
+                Thread.sleep(10000);
 
                 // Update book status after delay
                 synchronized (books) {

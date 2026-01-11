@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.security.access.prepost.PreAuthorize;
 import com.library.service.BookService;
 import org.springframework.http.ResponseEntity;
+import io.swagger.v3.oas.annotations.Operation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,12 +21,14 @@ public class BookController {
         this.service = service;
     }
 
+    @Operation(summary = "Starts the async book processing")
     @PreAuthorize("hasRole('LIBRARIAN')")
     @PostMapping
     public ResponseEntity<Book> addBook(@RequestBody Book book) {
         Book created = service.addBook(book.getTitle());
-        return ResponseEntity.accepted().body(created); // 202
+        return ResponseEntity.accepted().body(created);
     }
+
 
     @PreAuthorize("hasAnyRole('LIBRARIAN','MEMBER')")
     @GetMapping
