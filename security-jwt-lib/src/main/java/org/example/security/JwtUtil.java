@@ -2,15 +2,16 @@ package org.example.security;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
-import java.security.Key;
+
+import javax.crypto.SecretKey;
 import java.util.Date;
 
 public class JwtUtil {
 
     private static final String SECRET = "this-is-a-very-long-secret-key-for-jwt-signing-123456";
-    private static final long EXPIRATION = 1000 * 60 * 60; // 1 hour
+    private static final long EXPIRATION = 1000 * 60 * 60;
 
-    private static final Key key = Keys.hmacShaKeyFor(SECRET.getBytes());
+    private static final SecretKey key = Keys.hmacShaKeyFor(SECRET.getBytes());
 
     public static String generateToken(String username) {
         return Jwts.builder()
