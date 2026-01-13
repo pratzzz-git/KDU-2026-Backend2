@@ -2,6 +2,8 @@ package org.example.security;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+
+import javax.crypto.SecretKey;
 import java.security.Key;
 import java.util.Date;
 
@@ -23,7 +25,7 @@ public class JwtUtil {
 
     public static String extractUsername(String token) {
         return Jwts.parser()
-                .verifyWith(key)
+                .verifyWith((SecretKey) key)
                 .build()
                 .parseSignedClaims(token)
                 .getPayload()
